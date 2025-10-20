@@ -25,8 +25,11 @@ class ContextDetector:
     def __init__(self, config: Any):
         """Initialize context detector with configuration."""
         self.config = config
-        # Access Pydantic model attributes directly
-        self.context_enabled = config.context_detection
+        # Handle both dict and object config
+        if isinstance(config, dict):
+            self.context_enabled = config.get("context_detection", True)
+        else:
+            self.context_enabled = config.context_detection
         self.dependencies_checked = False
         self.available_methods = []
 

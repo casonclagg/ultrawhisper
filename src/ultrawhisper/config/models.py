@@ -18,13 +18,13 @@ class NotificationsConfig(BaseModel):
 
 class PushToTalkConfig(BaseModel):
     """Push-to-talk settings configuration."""
-    enabled: bool = Field(default=False, description="Enable push-to-talk mode")
+    enabled: bool = Field(default=True, description="Enable push-to-talk mode")
     key: str = Field(default="Key.cmd", description="Key for push-to-talk mode (transcription)")
 
 
 class QuestionModePushToTalkConfig(BaseModel):
     """Question mode push-to-talk settings configuration."""
-    enabled: bool = Field(default=False, description="Enable question mode push-to-talk")
+    enabled: bool = Field(default=True, description="Enable question mode push-to-talk")
     key: str = Field(default="Key.alt", description="Key for question mode push-to-talk")
 
 
