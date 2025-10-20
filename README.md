@@ -1,67 +1,53 @@
 # UltraWhisper
 
-Context-aware voice transcription that combines OpenAI's Whisper speech-to-text with LLM-powered intelligence for smart, accurate transcriptions that adapt to your workflow.
+**Open-source, context-aware voice transcription for Linux**
+
+An open-source alternative to [SuperWhisper](https://superwhisper.com/) (Mac-only), combining OpenAI's Whisper speech-to-text with LLM-powered intelligence for smart, accurate transcriptions that adapt to your workflow.
+
+![UltraWhisper TUI](docs/ultrawhisper.png)
 
 ## What Makes UltraWhisper Different?
 
-UltraWhisper goes beyond basic speech-to-text by understanding **what you're working on** and adapting its transcription accordingly. 
-Whether you're coding in VS Code, browsing GitHub, or working in a terminal, it delivers transcriptions that fit seamlessly into your context.
+UltraWhisper goes beyond basic speech-to-text by understanding **what you're working on** and adapting its transcription accordingly. Whether you're coding in VS Code, browsing GitHub, or working in a terminal, it delivers transcriptions that fit seamlessly into your context.
 
-### Key Features
+## Key Features
 
-#### 🎯 Context-Aware Transcription
-Automatically detects your active application and adapts transcription:
-- **VS Code**: Preserves code syntax, variable names, and technical terms
-- **Web Browser**: Recognizes GitHub, Stack Overflow, and formats accordingly
-- **Terminal**: Understands shell commands and technical language
-- **Auto-detection**: Uses `xdotool` and window properties for smart context detection
+**Context-Aware Transcription**
+- Automatically detects your active application (VS Code, Chrome, terminal, etc.)
+- Adapts transcription to preserve code syntax, technical terms, and domain-specific language
+- Uses `xdotool` and window properties for reliable context detection
 
-#### 🧠 LLM-Powered Correction
-Raw Whisper transcription gets cleaned up by AI that understands context:
-- Fixes Whisper's mistakes using GPT-4, Claude, or local models
+**LLM-Powered Correction**
+- Cleans up Whisper transcription using GPT-4, Claude, or local models
 - Applies application-specific prompts for better accuracy
-- Maintains technical terminology and code snippets correctly
-- Gracefully degrades to raw Whisper if LLM is unavailable
+- Gracefully degrades to raw Whisper output if LLM is unavailable
 
-#### 🔌 Multi-Provider LLM Support
-Choose your AI brain:
-- **OpenAI**: GPT-4o, GPT-4.1, and other official models
-- **Anthropic**: Claude 3.5 Sonnet and other Claude models
-- **Local/Self-hosted**: LMStudio, Ollama, or any OpenAI-compatible server
-- **Auto-detection**: Setup wizard finds available providers automatically
+**Multi-Provider LLM Support**
+- OpenAI (GPT-4o, GPT-4.1, etc.)
+- Anthropic (Claude 3.5 Sonnet and other Claude models)
+- Local/Self-hosted (LMStudio, Ollama, or any OpenAI-compatible server)
 
-#### ⌨️ Flexible Hotkey System
-Control transcription your way:
-- **Double-tap**: Tap a key twice quickly to toggle recording
-- **Push-to-talk**: Hold to record, release to transcribe
-- **Custom combinations**: Use any key combo that works for you
-- **Conflict detection**: Warns about window manager conflicts
+**Flexible Input Methods**
+- Double-tap: Quickly tap a key twice to toggle recording
+- Push-to-talk: Hold to record, release to transcribe
+- Custom key combinations to fit your workflow
 
-#### 🖥️ Sick TUI
-Its in style rn.
-- **TUI**: Beautiful terminal interface for interactive use
+**Beautiful Terminal Interface**
+- Interactive TUI built with prompt-toolkit
+- Real-time status display showing LLM connection, context, and system state
+- Live logs and configuration visibility
 
-#### 💬 Question Mode (Conversational AI)
-Switch to question mode for conversational AI assistance:
-- **Voice conversations**: Ask questions and get spoken responses
-- **Context-aware**: Adapts to your current application
-- **Conversation history**: Maintains context across multiple questions
-- **TTS support**: Speaks responses using system TTS or cloud providers
-- **MCP Integration**: Supports Model Context Protocol for extended capabilities
+**Chat Mode (Conversational AI)**
+- Voice conversations with your AI assistant
+- Maintains conversation history across questions
+- Context-aware responses based on your active application
+- TTS support for spoken responses
+- MCP (Model Context Protocol) integration for extended capabilities
+- Web search enabled by default
 
-#### 🔐 Privacy-First Architecture
-Your data stays yours:
-- **Content redaction**: Privacy mode hides sensitive content from logs
-- **Local processing**: Use local LLMs for complete privacy
-- **Configurable logging**: Control what gets logged and where
-- **No telemetry**: Zero tracking or data collection
-
-#### ⚙️ Smart Configuration
-Easy setup, powerful options:
-- **Interactive wizard**: `ultrawhisper setup` guides you through configuration
-- **XDG-compliant**: Config lives in `~/.config/ultrawhisper/`
-- **YAML schema**: Human-readable, version-controllable settings
-- **Graceful fallbacks**: Missing config triggers setup automatically
+**Privacy-First**
+- Use local LLMs for complete offline operation
+- No data leaves your machine when using local models
 
 ## Quick Start
 
@@ -75,53 +61,23 @@ cd ultrawhisper
 # Install dependencies
 uv sync
 
-# Run interactive setup
-ultrawhisper setup
+# Run interactive setup to set API keys etc
+uv run ultrawhisper setup
 ```
 
 ### Basic Usage
 
 ```bash
 # Run with saved config
-ultrawhisper
+uv run ultrawhisper
 
-# Launch beautiful TUI
-ultrawhisper tui
-
-# One-shot transcription
-ultrawhisper --once
-
-# Enable verbose logging
-ultrawhisper --verbose
-
-# Log prompts for debugging
-ultrawhisper --log-prompts
+# Launch TUI mode
+uv run ultrawhisper tui
 ```
 
 ### Configuration
 
 Configuration is stored at `~/.config/ultrawhisper/config.yml`. See [config.example.yml](config.example.yml) for a complete example with all options.
-
-**Minimal configuration:**
-
-```yaml
-# Whisper settings
-whisper:
-  model_name: tiny  # tiny, base, small, medium, large-v3
-  language: en
-
-# LLM settings (optional)
-llm:
-  provider: openai
-  model: gpt-4o
-  api_key: your-api-key-here
-  skip_if_unavailable: true
-
-# Hotkey settings
-push_to_talk:
-  enabled: true
-  key: Key.cmd
-```
 
 ## Features in Detail
 
@@ -136,23 +92,14 @@ This ensures your transcriptions are corrected appropriately for your current co
 
 ### Mode Switching
 
-Switch between **Transcription Mode** and **Question Mode** by saying:
-- "transcription mode" - for dictation and typing
-- "question mode" - for conversational AI assistance
+Switch between **Transcription Mode** and **Question Mode (soon to be Chat Mode)**:
 
 In question mode, you can have voice conversations with your AI assistant, complete with:
 - Context-aware responses based on active application
 - Conversation history (maintains context across questions)
 - Text-to-speech responses
 - MCP server integration for extended capabilities
-
-### Graceful Degradation
-
-Every component handles failure elegantly:
-- No `xdotool`? Falls back to basic context detection
-- LLM unavailable? Uses raw Whisper transcription
-- Audio issues? Logs errors without crashing
-- Missing config? Launches interactive setup
+- Websearch tool (OpenAI) is enabled by default
 
 ## System Requirements
 
@@ -192,7 +139,7 @@ uv run flake8 src/
 uv build
 
 # Run from source
-uv run ultrawhisper tui
+uv run ultrawhisper
 ```
 
 ## Architecture
@@ -203,8 +150,6 @@ UltraWhisper uses an **orchestrator pattern** where `TranscriptionApp` coordinat
 3. Context detection from active window
 4. LLM correction with context-aware prompts
 5. Text output to clipboard or active window
-
-See [CLAUDE.md](CLAUDE.md) for detailed architecture documentation.
 
 ## License
 
