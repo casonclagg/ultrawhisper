@@ -15,7 +15,6 @@ UltraWhisper goes beyond basic speech-to-text by understanding **what you're wor
 **Context-Aware Transcription**
 - Automatically detects your active application (VS Code, Chrome, terminal, etc.)
 - Adapts transcription to preserve code syntax, technical terms, and domain-specific language
-- Uses `xdotool` and window properties for reliable context detection
 
 **LLM-Powered Correction**
 - Cleans up Whisper transcription using GPT-4, Claude, or local models
@@ -23,14 +22,11 @@ UltraWhisper goes beyond basic speech-to-text by understanding **what you're wor
 - Gracefully degrades to raw Whisper output if LLM is unavailable
 
 **Multi-Provider LLM Support**
-- OpenAI (GPT-4o, GPT-4.1, etc.)
-- Anthropic (Claude 3.5 Sonnet and other Claude models)
-- Local/Self-hosted (LMStudio, Ollama, or any OpenAI-compatible server)
+- OpenAI, Anthropic, Local Models (OpenAI-compatible)
 
 **Flexible Input Methods**
 - Double-tap: Quickly tap a key twice to toggle recording
 - Push-to-talk: Hold to record, release to transcribe
-- Custom key combinations to fit your workflow
 
 **Beautiful Terminal Interface**
 - Interactive TUI built with prompt-toolkit
@@ -68,11 +64,8 @@ uv run ultrawhisper setup
 ### Basic Usage
 
 ```bash
-# Run with saved config
+# Run it!
 uv run ultrawhisper
-
-# Launch TUI mode
-uv run ultrawhisper tui
 ```
 
 ### Configuration
@@ -92,14 +85,7 @@ This ensures your transcriptions are corrected appropriately for your current co
 
 ### Mode Switching
 
-Switch between **Transcription Mode** and **Question Mode (soon to be Chat Mode)**:
-
-In question mode, you can have voice conversations with your AI assistant, complete with:
-- Context-aware responses based on active application
-- Conversation history (maintains context across questions)
-- Text-to-speech responses
-- MCP server integration for extended capabilities
-- Websearch tool (OpenAI) is enabled by default
+Switch between **Transcription Mode** and **Question Mode (soon to be called Chat Mode)**:
 
 ## System Requirements
 
