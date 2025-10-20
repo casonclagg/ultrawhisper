@@ -1,0 +1,147 @@
+# UltraWhisper Configuration
+# Save this file to: ~/.config/ultrawhisper/config.yml
+
+# Notification settings
+notifications:
+  visual_enabled: false
+  audio_enabled: false
+
+# Double tap activation (tap key twice quickly to toggle recording)
+use_double_tap: false
+
+# Push-to-talk settings for transcription mode (hold to record, release to transcribe)
+push_to_talk:
+  enabled: true
+  key: Key.cmd  # Key.cmd, Key.ctrl, Key.alt, Key.shift, etc.
+
+# Question mode push-to-talk settings (separate hotkey that auto-switches to question mode)
+question_mode_push_to_talk:
+  enabled: false  # Enable separate hotkey for question mode
+  key: Key.alt    # Key.alt, Key.ctrl, Key.shift, etc. (different from transcription key)
+
+# Hotkey settings (for non-push-to-talk mode)
+hotkey:
+  key: cmd
+  modifier: Key.cmd
+
+# Audio recording settings
+audio:
+  sample_rate: 16000
+  channels: 1
+  dtype: float32
+
+# Whisper transcription settings
+whisper:
+  model_name: tiny  # tiny, base, small, medium, large-v3
+  language: en
+
+# LLM (Large Language Model) settings
+llm:
+  provider: openai  # openai, anthropic, or any OpenAI-compatible server
+  model: gpt-4o
+  api_key: your-api-key-here  # Get from https://platform.openai.com/api-keys
+  base_url: https://api.openai.com/v1  # For OpenAI-compatible servers (Ollama, LMStudio, etc.)
+
+  # Base prompt for text correction
+  base_prompt: |
+    You are correcting speech-to-text transcription errors. Fix grammar,
+    spelling, and misheard words while preserving the original meaning.
+    DO not mention anything about the transcript, only respond with corrected transcript.
+
+  # Continue without LLM correction if service is unavailable
+  skip_if_unavailable: true
+
+  # MCP (Model Context Protocol) Servers - Optional
+  # mcp_servers:
+  #   - name: Example
+  #     command: python
+  #     args:
+  #       - /path/to/mcp_server.py
+  #     env:
+  #       EXAMPLE_VAR: "value"
+
+# Context detection (detects active application for smarter corrections)
+context_detection: true
+
+# Context-aware prompts for different applications
+context_prompts:
+  applications:
+    code: Preserve code syntax, variable names, and technical terms. DO not use markdown formatting and do not use new lines or carriage returns.
+    firefox: 'Format for web: use proper capitalization and punctuation for comments/posts.'
+    chrome: 'Format for web: use proper capitalization and punctuation for comments/posts.'
+    sublime_text: Preserve code syntax and technical terms.
+    vim: Preserve code syntax, commands, and technical terms.
+    gnome-terminal: Preserve commands, paths, and technical syntax. Don't add unnecessary punctuation.
+    kitty: Preserve commands and technical syntax.
+    alacritty: Preserve commands and technical syntax.
+    slack: Keep casual tone, use appropriate punctuation for chat.
+    discord: Keep casual tone for chat messages.
+    obsidian: Format as markdown. Improve clarity and structure.
+    libreoffice: Professional tone, proper grammar and punctuation.
+
+  # Pattern-based prompts (matches against window title)
+  patterns:
+    - match: .*(Terminal|console).*
+      prompt: Preserve command syntax and technical terms. Do not use newlines or carriage returns.
+    # match a discord channel
+    - match: .*kiwis-only.*
+      prompt: Speak like a kiwi with kiwi specific lingo.  Do not change the meaning or add additional stuff, but really go over the top in kiwi-fying the language.
+    # match game chat
+    - match: .*steam_app_2357570.*
+      prompt: If the transcript is a potentially mean message, convert it to a compliment
+        or otherwise nice message.  Try to maintain as much of the original meaning
+        and intention as possible, but if its just play mean, make it nice. DO not use ! or emdashes.
+# Logging configuration
+logging:
+  level: info  # debug, info, warning, error
+  log_context: true
+  log_prompts: false  # Log prompts sent to LLM (useful for debugging)
+  log_corrections: true
+  redact_content: false  # Redact sensitive content from logs
+  file: null  # Optional: path to log file
+
+# Output settings
+output:
+  paste_mode: false  # Use clipboard paste instead of simulated typing
+  typing_delay: 0.002  # Delay between typing each character (seconds)
+
+# TTS (Text-to-Speech) settings
+tts:
+  provider: "system"  # "system", "openai", "elevenlabs", etc.
+
+  # System TTS settings (Linux: espeak, macOS: say, Windows: SAPI)
+  system:
+    voice: null       # Use default system voice (or specify like "Alex" on macOS)
+    rate: 200         # Words per minute (50-500)
+    volume: 1.0       # Volume level (0.0-1.0)
+
+  # Future cloud providers:
+  # openai:
+  #   voice: "alloy"    # alloy, echo, fable, onyx, nova, shimmer
+  #   model: "tts-1"    # tts-1 or tts-1-hd
+  #   api_key: "your-openai-api-key"
+  # elevenlabs:
+  #   voice_id: "your-voice-id"
+  #   api_key: "your-elevenlabs-api-key"
+
+# Mode configuration
+modes:
+  # Default mode on startup: "transcription" or "question"
+  default: "transcription"
+
+  # Question mode settings (conversational AI assistant)
+  question:
+    # Context-aware prompts for different applications
+    context_prompts:
+      default: |
+        You are a helpful AI assistant. Provide concise, accurate answers to user questions.
+        Keep responses brief unless more detail is specifically requested.
+
+      # Add custom context prompts for different applications
+      # code: |
+      #   You are a coding assistant. Help with programming questions.
+
+    # Question mode behavior
+    output_response: false  # Whether to type/paste AI response (usually want this false for TTS)
+    tts_enabled: true      # Whether to speak the response (requires TTS setup)
+    conversation_history: 30  # Number of turns to remember (60 messages total)
