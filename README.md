@@ -10,6 +10,20 @@ An open-source alternative to [SuperWhisper](https://superwhisper.com/) (Mac-onl
 
 UltraWhisper goes beyond basic speech-to-text by understanding **what you're working on** and adapting its transcription accordingly. Whether you're coding in VS Code, browsing GitHub, or working in a terminal, it delivers transcriptions that fit seamlessly into your context.
 
+## Quick Start
+
+### Try It (No Installation Required)
+
+```bash
+# Run directly with uvx - no installation needed!
+
+# Setup your config
+uvx ultrawhisper setup
+
+# Run it
+uvx ultrawhisper
+```
+
 ## Key Features
 
 **Context-Aware Transcription**
@@ -45,27 +59,24 @@ UltraWhisper goes beyond basic speech-to-text by understanding **what you're wor
 - Use local LLMs for complete offline operation
 - No data leaves your machine when using local models
 
-## Quick Start
+
 
 ### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/casonclagg/ultrawhisper.git
-cd ultrawhisper
-
-# Install dependencies
-uv sync
-
-# Run interactive setup to set API keys etc
-uv run ultrawhisper setup
-```
-
-### Basic Usage
+For regular use, install from PyPI:
 
 ```bash
-# Run it!
-uv run ultrawhisper
+# Install with uv
+uv pip install ultrawhisper
+
+# Or with pip
+pip install ultrawhisper
+
+# Run interactive setup
+ultrawhisper setup
+
+# Run it
+ultrawhisper
 ```
 
 ### Configuration
@@ -111,7 +122,19 @@ sudo dnf install xdotool xorg-x11-utils espeak
 
 ## Development
 
+Want to contribute or modify UltraWhisper? Here's how to set up a development environment:
+
 ```bash
+# Clone the repository
+git clone https://github.com/casonclagg/ultrawhisper.git
+cd ultrawhisper
+
+# Install dependencies
+uv sync
+
+# Run from source
+uv run ultrawhisper
+
 # Code formatting
 uv run black src/
 
@@ -123,9 +146,6 @@ uv run flake8 src/
 
 # Build package
 uv build
-
-# Run from source
-uv run ultrawhisper
 ```
 
 ## Architecture
